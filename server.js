@@ -9,6 +9,9 @@ var bodyParser = require('body-parser')
 var mongoose = require('mongoose');
 var Clazz = require('./db/models/class');
 var User = require('./db/models/user');
+var QnA = require('./db/models/QA');
+var Test = require('./db/models/test');
+var Result = require('./db/models/Result');
 mongoose.connect('mongodb://localhost/techkids1');
 
 User.find({username: "admin"})
@@ -81,6 +84,7 @@ app.route("/api/user/login")
       });
 
   //    =========================== USER ===============================
+
 app.get('/api/getUser', function(req, res){
   User.find()
   .exec(function(err, data){
@@ -107,17 +111,17 @@ app.get('/api/getUserByAccount/:account', function(req, res){
     }
   });
 });
-//
-// // ============================= QA ====================
-//
+
+// // // ============================= QA ====================
+
 app.get('/api/getQA', function(req, res){
-  User.find()
+  QnA.find()
   .exec(function(err, data){
     res.json(data)
-  })
+  });
 });
 app.get('/api/getQA/single', function(req, res){
-  User.find({single:"true"}, function(err, data){
+  QnA.find({single:"true"}, function(err, data){
     if(data.length > 0){
       res.json(data);
     }
@@ -125,25 +129,9 @@ app.get('/api/getQA/single', function(req, res){
       res.json([]);
     }
   });
+});
 app.get('/api/getQA/multi', function(req, res){
-  User.find({single:"false"}, function(err, data){
-    if(data.length > 0){
-      res.json(data);
-    }
-    else{
-      res.json([]);
-    }
-  });
-});
-// ============================= test ====================
-app.get('/api/getTest', function(req, res){
-  User.find()
-  .exec(function(err, data){
-    res.json(data)
-  });
-});
-app.get('/api/getTestByName/:name', function(req, res){
-  User.find({title: req.params.name}, function(err, data){
+  QnA.find({single:"false"}, function(err, data){
     if(data.length > 0){
       res.json(data);
     }
@@ -153,9 +141,29 @@ app.get('/api/getTestByName/:name', function(req, res){
   });
 });
 
-// ============================= Result ====================
+// // ============================= test ====================
+
+app.get('/api/getTest', function(req, res){
+  Test.find()
+  .exec(function(err, data){
+    res.json(data)
+  });
+});
+app.get('/api/getTestByName/:name', function(req, res){
+  Test.find({title: req.params.name}, function(err, data){
+    if(data.length > 0){
+      res.json(data);
+    }
+    else{
+      res.json([]);
+    }
+  });
+});
+
+// // ============================= Result ====================
+
 app.get('/api/getResult', function(req, res){
-  User.find()
+  Result.find()
   .exec(function(err, data){
     res.json(data)
   });
